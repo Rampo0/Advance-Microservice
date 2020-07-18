@@ -27,5 +27,13 @@ build :
             manual :
                 - src : '**/*.js'
                   dest : .
+        - image : rampooco/tickets
+          context : tickets
+          docker :
+            dockerfile : Dockerfile
+          sync :
+            manual :
+                - src : 'src/**/*.ts'
+                  dest : .
 
     
