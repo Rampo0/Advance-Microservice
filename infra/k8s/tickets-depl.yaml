@@ -16,6 +16,14 @@ spec:
                 - name : tickets
                   image: rampooco/tickets
                   env :
+                    - name: NATS_CLIENT_ID
+                      valueFrom:
+                        fieldRef:
+                            fieldPath: metadata.name
+                    - name: NATS_URL
+                      value : 'http://nats-clusterip-service:4222'
+                    - name: NATS_CLUSTER_ID
+                      value : 'ticketing'
                     - name : MONGO_URI
                       value : 'mongodb://tickets-mongo-clusterip:27017/tickets'
                     - name : JWT_KEY
@@ -23,6 +31,7 @@ spec:
                         secretKeyRef:
                             name: jwt-secret
                             key : JWT_KEY
+                    
 ---
 
 apiVersion : v1
