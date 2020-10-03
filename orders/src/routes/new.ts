@@ -2,8 +2,8 @@ import express , { Request, Response } from 'express';
 import { validateRequest , requireAuth, NotFoundError, BadRequestError, OrderStatus } from '@rampooticketing/common';
 import { body } from 'express-validator';
 import mongoose from 'mongoose';
-import { Ticket } from '../../models/ticket';
-import { Order } from '../../models/order';
+import { Ticket } from '../models/ticket';
+import { Order } from '../models/order';
 
 const router = express.Router();
 
