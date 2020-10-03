@@ -35,5 +35,13 @@ build :
             manual :
                 - src : 'src/**/*.ts'
                   dest : .
+        - image : rampooco/orders
+          context : orders
+          docker :
+            dockerfile : Dockerfile
+          sync :
+            manual :
+                - src : 'src/**/*.ts'
+                  dest : .
 
     
