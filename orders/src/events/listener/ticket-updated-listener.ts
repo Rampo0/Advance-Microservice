@@ -13,15 +13,24 @@ export class TicketUpdatedListener extends Listener<TicketUpdatedEvent>{
             version : data.version,
         });
 
+        // const ticket = await Ticket.findById(data.id);
+
         if(!ticket){
             throw new Error("Not found error");
         }
 
-        const { price, title, version } = data;
+        // const { price, title, version } = data;
+        // ticket.set({
+        //     title,
+        //     price,
+        //     version,
+        // });
+
+        // using plugin
+        const { price, title } = data;
         ticket.set({
             title,
             price,
-            version,
         });
 
         await ticket.save()
