@@ -1,5 +1,5 @@
 import express, { Request , Response } from 'express';
-import { NotAuthorizedError ,requireAuth, validateRequest, NotFoundError } from '@rampooticketing/common';
+import { NotAuthorizedError, BadRequestError ,requireAuth, validateRequest, NotFoundError } from '@rampooticketing/common';
 import { body } from 'express-validator';
 import { Ticket } from '../models/ticket';
 import { TicketUpdatedPublisher } from '../events/publishers/ticket-updated-publisher';
@@ -26,6 +26,10 @@ router.put('/api/tickets/:id', requireAuth, [
 
     if(ticket.userId !== req.currentUser!.id){
         throw new NotAuthorizedError();
+    }
+
+    if(ticket.orderId){
+        throw new BadRequestError("Cannot edit reserved ticket");
     }
 
     ticket.set({
