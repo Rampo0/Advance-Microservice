@@ -51,6 +51,14 @@ build :
             manual :
                 - src : 'src/**/*.ts'
                   dest : .
-        
+        - image : rampooco/payments
+          context : payments
+          docker :
+            dockerfile : Dockerfile
+          sync :
+            manual :
+                - src : 'src/**/*.ts'
+                  dest : .
+          
 
     
