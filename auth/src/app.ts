@@ -7,6 +7,7 @@ import { currentUserRouter } from './routes/current-user';
 import { signinRouter } from './routes/signin';
 import { signoutRouter } from './routes/signout';
 import { signupRouter } from './routes/signup';
+import { livenessReadinessRouter } from './routes/liveness-readiness';
 import { errorHandler , NotFoundError} from '@rampooticketing/common';
 
 const app = express();
@@ -19,6 +20,7 @@ app.use(
     })
 );
 
+app.use(livenessReadinessRouter);
 app.use(currentUserRouter);
 app.use(signinRouter);
 app.use(signoutRouter);
