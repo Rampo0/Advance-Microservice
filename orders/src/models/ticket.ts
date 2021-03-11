@@ -70,7 +70,7 @@ ticketSchema.statics.findByEvent = (event : { id : string, version : number}) =>
 ticketSchema.methods.isReserved = async function(){
     
     const existingOrder = await Order.findOne({
-        ticket : this,
+        ticket : this as TicketDoc,
         status : {
             $in : [
                 OrderStatus.AwaitingPayment,
