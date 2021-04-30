@@ -21,12 +21,12 @@ spec:
                 #         port: 3000
                 #     initialDelaySeconds: 70
                 #     timeoutSeconds: 80
-                  readinessProbe:
-                    httpGet:
-                        path: /api/users/liveness-readiness
-                        port: 3000
-                    initialDelaySeconds: 70
-                    timeoutSeconds: 80 
+                  # readinessProbe:
+                  #   httpGet:
+                  #       path: /api/users/liveness-readiness
+                  #       port: 3000
+                  #   initialDelaySeconds: 70
+                  #   timeoutSeconds: 80 
                   env :
                     - name : MONGO_URI
                       value : 'mongodb://auth-mongo-clusterip:27017/auth'

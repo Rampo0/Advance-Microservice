@@ -46,7 +46,7 @@ async (req : Request, res : Response) => {
         jwt : userJwt
     };
 
-    res.status(200).send(existingUser);
+    res.status(200).send({user : existingUser, token : userJwt});
 
 });
 
