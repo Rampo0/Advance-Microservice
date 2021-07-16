@@ -1,4 +1,4 @@
-apiVersion : networking.k8s.io/v1beta1
+apiVersion : networking.k8s.io/v1
 kind : Ingress
 metadata : 
     name : ingress-srv
@@ -11,24 +11,39 @@ spec :
           http :
             paths :
                 - path : /api/payments/?(.*)
+                  pathType: Prefix
                   backend :
-                    serviceName : payments-clusterip-service
-                    servicePort : 3000
+                    service: 
+                      name: payments-clusterip-service
+                      port:
+                        number: 3000
                 - path : /api/users/?(.*)
+                  pathType: Prefix
                   backend :
-                    serviceName : auth-clusterip-service
-                    servicePort : 3000
+                    service:
+                      name: auth-clusterip-service
+                      port:
+                        number: 3000
                 - path : /api/tickets/?(.*)
+                  pathType: Prefix
                   backend :
-                    serviceName : tickets-clusterip-service
-                    servicePort : 3000
+                    service:
+                      name: tickets-clusterip-service
+                      port:
+                        number: 3000
                 - path : /api/orders/?(.*)
+                  pathType: Prefix
                   backend :
-                    serviceName : orders-clusterip-service
-                    servicePort : 3000
+                    service:
+                      name: orders-clusterip-service
+                      port:
+                        number: 3000
                 - path : /?(.*)
+                  pathType: Prefix
                   backend :
-                    serviceName : client-clusterip-service
-                    servicePort : 3000
+                    service:
+                      name: client-clusterip-service
+                      port:
+                        number: 3000
                 
               
