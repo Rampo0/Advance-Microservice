@@ -1,0 +1,9 @@
+global:
+  scrape_interval: 3s
+  evaluation_interval: 5s
+scrape_configs:
+  - job_name: rampoo-application
+    honor_labels: true
+    metrics_path: '/swagger-stats/metrics'
+    static_configs:
+      - targets: ['tickets-clusterip-service:3000', 'orders-clusterip-service:3000']

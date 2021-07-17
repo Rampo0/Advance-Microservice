@@ -8,31 +8,36 @@ export class TicketUpdatedListener extends Listener<TicketUpdatedEvent>{
     subject : Subjects.TicketUpdated = Subjects.TicketUpdated;
 
     async onMessage( data : TicketUpdatedEvent['data'], msg : Message ){
-        const ticket = await Ticket.findByEvent({
-            id : data.id,
-            version : data.version,
-        });
+        // const ticket = await Ticket.findByEvent({
+        //     id : data.id,
+        //     version : data.version,
+        // });
 
-        // const ticket = await Ticket.findById(data.id);
-
+        let ticket;
+        try {
+            ticket = await Ticket.findById(data.id);    
+        } catch (err) {
+            console.error(err);
+        }
+        
         if(!ticket){
             console.error("Not Found Error");
             return;
         }
 
-        // const { price, title, version } = data;
-        // ticket.set({
-        //     title,
-        //     price,
-        //     version,
-        // });
-
-        // using plugin
-        const { price, title } = data;
+        const { price, title, version } = data;
         ticket.set({
             title,
             price,
+            version,
         });
+
+        // using plugin
+        // const { price, title } = data;
+        // ticket.set({
+        //     title,
+        //     price,
+        // });
 
         await ticket.save()
 

@@ -8,6 +8,8 @@ import { indexOrderRouter } from './routes/index';
 import { newOrderRouter } from './routes/new';
 import { showOrderRouter } from './routes/show';
 import { deleteOrderRouter } from './routes/delete';
+import { metricsRouter } from './routes/metrics';
+import swStats from 'swagger-stats';
 
 const app = express();
 app.set('trust proxy', true);
@@ -18,9 +20,10 @@ app.use(
         secure : process.env.NODE_ENV !== "test"
     })
 );
-
+app.use(swStats.getMiddleware({}));
 app.use(currentUser);
 
+app.use(metricsRouter);
 app.use(indexOrderRouter);
 app.use(newOrderRouter);
 app.use(showOrderRouter);
