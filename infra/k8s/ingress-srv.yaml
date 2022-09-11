@@ -38,6 +38,13 @@ spec:
                 name: orders-clusterip-service
                 port:
                   number: 3000
+          - path: /api/websocket/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: websocket-clusterip-service
+                port:
+                  number: 8080
           - path: /?(.*)
             pathType: Prefix
             backend:

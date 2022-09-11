@@ -1,64 +1,69 @@
-apiVersion : skaffold/v2alpha3
-kind : Config
-deploy :
-    kubectl :
-        manifests:
-            - ./infra/k8s/*
-build :
-    local :
-      push : false
-    # googleCloudBuild:
-    #   projectId: ticketing-app-279804
-    artifacts :
-        # - image : us.gcr.io/ticketing-app-279804/auth
-        - image : rampooco/auth
-          context : auth
-          docker :
-            dockerfile : Dockerfile
-          sync :
-            manual :
-                - src : 'src/**/*.ts'
-                  dest : .
-        - image : rampooco/client
-          context : client
-          docker :
-            dockerfile : Dockerfile
-          sync :
-            manual :
-                - src : '**/*.js'
-                  dest : .
-        - image : rampooco/tickets
-          context : tickets
-          docker :
-            dockerfile : Dockerfile
-          sync :
-            manual :
-                - src : 'src/**/*.ts'
-                  dest : .
-        - image : rampooco/orders
-          context : orders
-          docker :
-            dockerfile : Dockerfile
-          sync :
-            manual :
-                - src : 'src/**/*.ts'
-                  dest : .
-        - image : rampooco/expiration
-          context : expiration
-          docker :
-            dockerfile : Dockerfile
-          sync :
-            manual :
-                - src : 'src/**/*.ts'
-                  dest : .
-        - image : rampooco/payments
-          context : payments
-          docker :
-            dockerfile : Dockerfile
-          sync :
-            manual :
-                - src : 'src/**/*.ts'
-                  dest : .
-          
-
-    
+apiVersion: skaffold/v2alpha3
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./infra/k8s/*
+build:
+  local:
+    push: false
+  # googleCloudBuild:
+  #   projectId: ticketing-app-279804
+  artifacts:
+    # - image : us.gcr.io/ticketing-app-279804/auth
+    - image: rampooco/auth
+      context: auth
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: .
+    - image: rampooco/client
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "**/*.js"
+            dest: .
+    - image: rampooco/tickets
+      context: tickets
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: .
+    - image: rampooco/orders
+      context: orders
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: .
+    - image: rampooco/expiration
+      context: expiration
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: .
+    - image: rampooco/payments
+      context: payments
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: .
+    - image: rampooco/websocket
+      context: websocket
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "**/*.go"
+            dest: .

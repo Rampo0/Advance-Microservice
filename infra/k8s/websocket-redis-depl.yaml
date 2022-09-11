@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: websocket-redis-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: websocket-redis
+  template:
+    metadata:
+      labels:
+        app: websocket-redis
+    spec:
+      containers:
+        - name: websocket-redis
+          image: redis:7.0.4
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: websocket-redis-svc
+spec:
+  selector:
+    app: websocket-redis
+  ports:
+    - name: redis
+      protocol: TCP
+      port: 6379
+      targetPort: 6379
