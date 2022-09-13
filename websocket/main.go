@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"syscall"
 
 	"go.rampoo.io/websocket/handler"
 	"go.rampoo.io/websocket/initializer"
@@ -10,9 +11,31 @@ import (
 )
 
 func main() {
+	// Increase resources limitations
+	var rLimit syscall.Rlimit
+	if err := syscall.Getrlimit(syscall.RLIMIT_NOFILE, &rLimit); err != nil {
+		panic(err)
+	}
+	rLimit.Cur = rLimit.Max
+	if err := syscall.Setrlimit(syscall.RLIMIT_NOFILE, &rLimit); err != nil {
+		panic(err)
+	}
+
+	// Enable pprof hooks
+	go func() {
+		if err := http.ListenAndServe("localhost:6060", nil); err != nil {
+			log.Fatalf("pprof failed: %v", err)
+		}
+	}()
+
 	rcl := initializer.Redis()
 
-	hub := websocket.NewHub(rcl)
+	hub, err := websocket.NewHub(rcl)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	go hub.Run()
 
 	wshandler := handler.NewWSHandler(hub)
@@ -21,7 +44,7 @@ func main() {
 
 	log.Println("http server started on :8080")
 
-	err := http.ListenAndServe(":8080", nil)
+	err = http.ListenAndServe("0.0.0.0:8080", nil)
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}

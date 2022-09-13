@@ -16,3 +16,7 @@ run:
 	./bin/ws
 
 start: build run
+
+lt:
+	@echo ">> Load testing..."
+	@go run ./loadtest/client.go
