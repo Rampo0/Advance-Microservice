@@ -13,7 +13,7 @@ func Redis() *redis.Client {
 	addr := os.Getenv("REDIS_ADDR")
 
 	if addr == "" {
-		addr = fmt.Sprintf("%v:%v", "localhost", "6379")
+		addr = fmt.Sprintf("%v:%v", "redis", "6379")
 	}
 
 	opts := &redis.Options{

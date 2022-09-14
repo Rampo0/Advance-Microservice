@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+  app:
+    build: 
+      context: .
+    image: rampooco/websocket-client
+    container_name: websocket-client
+    restart: on-failure
+    networks: 
+      - websocket_ws
+
+networks:
+  websocket_ws:
+    external : true

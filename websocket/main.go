@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"syscall"
@@ -16,7 +17,9 @@ func main() {
 	if err := syscall.Getrlimit(syscall.RLIMIT_NOFILE, &rLimit); err != nil {
 		panic(err)
 	}
+	// rLimit.Max = 1000000
 	rLimit.Cur = rLimit.Max
+	fmt.Println(rLimit.Cur)
 	if err := syscall.Setrlimit(syscall.RLIMIT_NOFILE, &rLimit); err != nil {
 		panic(err)
 	}
