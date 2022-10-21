@@ -3,7 +3,7 @@ kind: Config
 deploy:
   kubectl:
     manifests:
-      - ./infra/k8s/*
+      - ./infra/k8s-depl/*
 build:
   local:
     push: false
@@ -59,11 +59,11 @@ build:
         manual:
           - src: "src/**/*.ts"
             dest: .
-    - image: rampooco/websocket
-      context: websocket
-      docker:
-        dockerfile: Dockerfile
-      sync:
-        manual:
-          - src: "**/*.go"
-            dest: .
+    # - image: rampooco/websocket
+    #   context: websocket
+    #   docker:
+    #     dockerfile: Dockerfile
+    #   sync:
+    #     manual:
+    #       - src: "**/*.go"
+    #         dest: .
