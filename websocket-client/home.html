@@ -6,9 +6,11 @@
 window.onload = function () {
     var conn;
     var msg = document.getElementById("msg");
+    var msg2 = document.getElementById("msg2");
     var log = document.getElementById("log");
+    var log2 = document.getElementById("log2");
 
-    function appendLog(item) {
+    function appendLog(log, item) {
         var doScroll = log.scrollTop > log.scrollHeight - log.clientHeight - 1;
         log.appendChild(item);
         if (doScroll) {
@@ -23,13 +25,47 @@ window.onload = function () {
         if (!msg.value) {
             return false;
         }
-        conn.send(msg.value);
+
+        let payload = {
+            "channel": "room-code-1",
+            "text": msg.value
+        }
+
+        const message = JSON.stringify({
+            "type" : 2,
+            "payload" : JSON.stringify(payload)
+        });
+
+        conn.send(message);
         msg.value = "";
         return false;
     };
 
+    document.getElementById("form2").onsubmit = function () {
+        if (!conn) {
+            return false;
+        }
+        if (!msg2.value) {
+            return false;
+        }
+
+        let payload = {
+            "channel": "room-code-2",
+            "text": msg2.value
+        }
+
+        const message = JSON.stringify({
+            "type" : 2,
+            "payload" : JSON.stringify(payload)
+        });
+
+        conn.send(message);
+        msg2.value = "";
+        return false;
+    };
+
     if (window["WebSocket"]) {
-        conn = new WebSocket("ws://" + "ticketing.dev" + "/api/websocket");
+        conn = new WebSocket("ws://" + "localhost:8080/chat/ws");
         conn.onclose = function (evt) {
             var item = document.createElement("div");
             item.innerHTML = "<b>Connection closed.</b>";
@@ -38,11 +74,38 @@ window.onload = function () {
         conn.onmessage = function (evt) {
             var messages = evt.data.split('\n');
             for (var i = 0; i < messages.length; i++) {
+                let message = JSON.parse(messages[i]);
+                console.log(message)
+
                 var item = document.createElement("div");
-                item.innerText = messages[i];
-                appendLog(item);
+                item.innerText = message.text;
+
+                if (message.channel == "room-code-2") {
+                    appendLog(log2, item);
+                }else{
+                    appendLog(log, item);
+                }
             }
         };
+
+        let subscribePayload = {
+            wskey : "1234567890",
+            channels : ["room-code-2","room-code-1"]
+        }
+
+        let strSubPayload = JSON.stringify(subscribePayload);
+
+        let subscribeMsg = {
+            type: 1,
+            payload: strSubPayload
+        }
+
+        let payload = JSON.stringify(subscribeMsg);
+
+        conn.onopen = function (evt) {
+            conn.send(payload);
+        };
+
     } else {
         var item = document.createElement("div");
         item.innerHTML = "<b>Your browser does not support WebSockets.</b>";
@@ -64,7 +127,19 @@ body {
     background: gray;
 }
 
-#log {
+
+.log {
+    background: white;
+    margin: 0;
+    padding: 0.5em 0.5em 0.5em 0.5em;
+    top: 0.5em;
+    left: 0.5em;
+    right: 0.5em;
+    bottom: 3em;
+    overflow: auto;
+}
+
+/* #log {
     background: white;
     margin: 0;
     padding: 0.5em 0.5em 0.5em 0.5em;
@@ -74,12 +149,11 @@ body {
     right: 0.5em;
     bottom: 3em;
     overflow: auto;
-}
+} */
 
 #form {
     padding: 0 0.5em 0 0.5em;
     margin: 0;
-    position: absolute;
     bottom: 1em;
     left: 0px;
     width: 100%;
@@ -89,10 +163,15 @@ body {
 </style>
 </head>
 <body>
-<div id="log"></div>
+<div id="log" class="log"></div>
 <form id="form">
     <input type="submit" value="Send" />
     <input type="text" id="msg" size="64" autofocus />
+</form>
+<div id="log2" class="log"></div>
+<form id="form2">
+    <input type="submit" value="Send" />
+    <input type="text" id="msg2" size="64" autofocus />
 </form>
 </body>
 </html>
