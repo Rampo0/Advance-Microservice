@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/gobwas/ws v1.1.0
-	golang.org/x/sys v0.0.0-20211216021012-1d35b9e2eb4e
+	golang.org/x/sys v0.1.0
 )
 
 require (
